@@ -19,3 +19,7 @@
 - Высокий контраст белого фона и черных текстов/синих элементов управления
 
 https://github.com/user-attachments/assets/2a904565-f328-4be6-91b0-efefb1ec5277
+
+*Обновление: рабочий search bar*
+
+<img width="376" height="821" alt="image" src="https://github.com/user-attachments/assets/64e04562-e877-4b3e-88b1-1802baa129ad" />
