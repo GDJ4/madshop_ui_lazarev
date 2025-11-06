@@ -1,17 +1,21 @@
-# madshop_ui_lazarev
+# Отчёт по практическому занятию №5 
+## Выполнил: Лазарев Г.С. 
+## Группа: ЭФБО-10-23
 
-A new Flutter project.
 
-## Getting Started
+## Краткий анализ UI/UX
 
-This project is a starting point for a Flutter application.
+### Неудачные решения:
 
-A few resources to get you started if this is your first Flutter project:
+- Использование большой вариации шрифтов (постоянно разные веса, размеры, цвет текста)
+- Неудачный выбор шрифтов, а конкретно про цены, где использован Raleway. Данный шрифт не совпадает по стилистике с остальными шрифтами дизайна
+- Непостоянство дизайна первых трех экранов авторизации: разные отступы, разные шрифты, разный border-radius у полей ввода и кнопок
+неудачное использование цветов - primary blue слишком яркий, в поиске по каталогу используется более светлый, потмоу что основной синий сликшом яркий, но такая разница цветов дезориентирует пользователя, неудачно использован светло-серый для полей ввода, так как контраст этого цвета и серого влечет большую разницу на разных экранах, в разы лучше было бы использовать тени, например.
+- xИконки "Избранное" и "Корзина" слабо видны на фоне карточки товара, так как не цельные и бело/черные, лучше сделать с фоном, как кнопка удалить в корзине на товаре.
+### Удачные решения:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- UI приложения следует устоявшимся правилам интерфейса онлайн-магазина
+- Широкое испльзование закругленных углов придает современности дизайну
+- Высокий контраст белого фона и черных текстов/синих элементов управления
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# madshop_ui_lazarev
+https://github.com/user-attachments/assets/2a904565-f328-4be6-91b0-efefb1ec5277
