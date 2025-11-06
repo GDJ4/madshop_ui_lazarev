@@ -178,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class ShopContent extends StatelessWidget {
+class ShopContent extends StatefulWidget {
   final List<Map<String, dynamic>> products;
   final Set<int> favorites;
   final Set<int> cart;
@@ -195,7 +195,28 @@ class ShopContent extends StatelessWidget {
   });
 
   @override
+  State<ShopContent> createState() => _ShopContentState();
+}
+
+class _ShopContentState extends State<ShopContent> {
+  String _searchQuery = '';
+
+  List<Map<String, dynamic>> get _filteredProducts {
+    if (_searchQuery.trim().isEmpty) {
+      return widget.products;
+    }
+    final query = _searchQuery.toLowerCase();
+    return widget.products.where((product) {
+      final title = (product['title'] as String).toLowerCase();
+      final description = (product['description'] as String).toLowerCase();
+      return title.contains(query) || description.contains(query);
+    }).toList();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final products = _filteredProducts;
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -224,47 +245,66 @@ class ShopContent extends StatelessWidget {
                         borderSide: BorderSide.none,
                       ),
                     ),
+                    textInputAction: TextInputAction.search,
+                    onChanged: (value) {
+                      setState(() {
+                        _searchQuery = value;
+                      });
+                    },
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 16),
             Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.7,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                ),
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  final product = products[index];
-                  return ProductCard(
-                    title: product['title'] as String,
-                    description: product['description'] as String,
-                    price: product['price'] as double,
-                    imagePath: product['imagePath'] as String,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductScreen(
-                            product: product,
-                            cart: cart,
-                            onCartToggle: onCartToggle,
-                          ),
+              child: products.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'Nothing matches your search',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
                         ),
-                      );
-                    },
-                    isFavorite: favorites.contains(product['id']),
-                    onFavoriteToggle: () =>
-                        onFavoriteToggle(product['id'] as int),
-                    isInCart: cart.contains(product['id']),
-                    onCartToggle: () => onCartToggle(product['id'] as int),
-                  );
-                },
-              ),
+                      ),
+                    )
+                  : GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.7,
+                        crossAxisSpacing: 16,
+                        mainAxisSpacing: 16,
+                      ),
+                      itemCount: products.length,
+                      itemBuilder: (context, index) {
+                        final product = products[index];
+                        return ProductCard(
+                          title: product['title'] as String,
+                          description: product['description'] as String,
+                          price: product['price'] as double,
+                          imagePath: product['imagePath'] as String,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProductScreen(
+                                  product: product,
+                                  cart: widget.cart,
+                                  onCartToggle: widget.onCartToggle,
+                                ),
+                              ),
+                            );
+                          },
+                          isFavorite:
+                              widget.favorites.contains(product['id']),
+                          onFavoriteToggle: () => widget
+                              .onFavoriteToggle(product['id'] as int),
+                          isInCart: widget.cart.contains(product['id']),
+                          onCartToggle: () =>
+                              widget.onCartToggle(product['id'] as int),
+                        );
+                      },
+                    ),
             ),
           ],
         ),
